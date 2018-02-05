@@ -1,8 +1,10 @@
 FROM python:3.6-alpine
 
-WORKDIR /usr/src/app
+RUN apk --update add bash curl && rm -rf /var/cache/apk/*
 
+WORKDIR /usr/src/app
 COPY requirements.txt ./
+
 RUN pip install -r requirements.txt
 RUN pip install pytest pytest-flask pytest-cov
 
