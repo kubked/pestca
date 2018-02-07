@@ -23,6 +23,6 @@ def test_unexisting_text(client):
             ],
         }
     )
-    response_msg = res.get_json()
+    response_msg = res.json
     for text_obj in response_msg.get('texts'):
         assert text_obj.get('cls') is None

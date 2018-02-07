@@ -13,7 +13,7 @@ def index():
     return jsonify({'Hello': 'World'})
 
 
-@api.route('/classify', method='POST')
+@api.route('/classify', methods=['POST'])
 def classify():
     request_msg = request.get_json()
     response = {
@@ -32,7 +32,7 @@ def classify():
     return jsonify(response)
 
 
-@api.route('/learn', method='POST')
+@api.route('/learn', methods=['POST'])
 def learn():
     request_msg = request.get_json()
     for text_obj in request_msg.get('texts'):
