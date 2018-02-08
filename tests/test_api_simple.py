@@ -9,7 +9,7 @@ from pestca import models
 @pytest.fixture(scope="function")
 def clear_after():
     yield clear_after
-    models.simple_memory = {}
+    models.redis.flushdb()
 
 
 def post_json(client, url, data):
