@@ -1,5 +1,5 @@
 from flask import Flask
-from src import make_app
+from pestca import make_app
 
 
 app = make_app()

@@ -1,9 +1,9 @@
 import pytest
 
-from src import make_app
+from pestca.app import create_app
 
 
 @pytest.fixture(scope='session')
 def app():
-    app = make_app()
+    app = create_app()
     return app

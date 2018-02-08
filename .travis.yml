@@ -6,4 +6,4 @@ services:
   - docker
 
 install: docker-compose -f docker-compose.test.yml build
-script: docker-compose -f docker-compose.test.yml run test /bin/bash -c "python -m pytest --cov=src/ tests"
+script: docker-compose -f docker-compose.test.yml run test /bin/bash -c "python -m pytest --cov=pestca/ tests"
