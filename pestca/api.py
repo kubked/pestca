@@ -53,6 +53,6 @@ def learn():
     request_msg = get_request_json(learn_post_schema)
     for text_obj in request_msg.get('texts'):
         text = text_obj.get('text')
-        cls = text_obj.get('cls')
+        cls = text_obj.get('class')
         models.learn(text, cls)
     return jsonify({'status': 'ok'})

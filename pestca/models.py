@@ -3,7 +3,7 @@ import string
 from redis import Redis
 
 
-redis = Redis(host='redis', port=6379)
+redis = Redis(host='redis', port=6379, decode_responses=True)
 
 
 letters_whitespace = set(string.ascii_letters + string.whitespace)
@@ -48,16 +48,17 @@ def classify(text):
     classes = redis.hgetall('classes')
     if not classes:
         return None
-    classes_all = sum(classes.values())
+    print(classes)
+    classes_all = sum(map(int, classes.values()))
     probabilities = dict(
-        (cls, count / classes_all)
+        (cls, float(count) / classes_all)
         for (cls, count) in classes.items()
     )
     # compute conditional probabilities of the token set
     for token in tokens:
         for cls in tokens[token]:
-            supports_cls = tokens[token].get(cls, 0)
-            prob_token_cls = supports_cls / classes[cls]
+            supports_cls = float(tokens[token].get(cls, 0))
+            prob_token_cls = supports_cls / float(classes[cls])
             probabilities[cls] *= prob_token_cls
     # return class with maximum probability
     return max(probabilities, key=probabilities.get)

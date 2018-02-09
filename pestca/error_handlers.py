@@ -21,4 +21,4 @@ class ErrorHandler(Exception):
 
     @classmethod
     def wrong_msg_format(cls):
-        return cls('Message format is wrong', 400)
+        return cls('Message format does not apply to schema', 400)
