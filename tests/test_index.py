@@ -1,12 +1,4 @@
-import pytest
 from flask import url_for
-
-from src import make_app
-
-
-@pytest.fixture
-def app():
-    return make_app()
 
 
 def test_index(client):

@@ -6,5 +6,9 @@ web:
   ports:
     - "5000"
 redis:
-  image: redis
+  image: redis:alpine
+  volumes_from:
+    - data
+  command: redis-server --apendonly yes
+  restart: always
 
