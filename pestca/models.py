@@ -31,13 +31,13 @@ def tokenize(text):
     return alpha_text.lower().split()
 
 
-def classify(text):
-    """Classify given text to the most probable class.
+def compute_classes_probabilities(text):
+    """Compute conditional probability of belonging to each existing class.
 
     :param text:
-        A string, representing an observation which needs to be classified.
+        A ```string```, representing an observation.
     :return:
-        The most likely class or ``None`` if no class available.
+        ```Dict``` with classes names as keys and probabilities as values.
     """
     # get numbers of classifications tokens to classes
     tokens = {}
@@ -47,8 +47,7 @@ def classify(text):
     # get classes and compute their probabilities of occurrences
     classes = redis.hgetall('classes')
     if not classes:
-        return None
-    print(classes)
+        return {}
     classes_all = sum(map(int, classes.values()))
     probabilities = dict(
         (cls, float(count) / classes_all)
@@ -56,10 +55,25 @@ def classify(text):
     )
     # compute conditional probabilities of the token set
     for token in tokens:
-        for cls in tokens[token]:
+        for cls in classes:
             supports_cls = float(tokens[token].get(cls, 0))
             prob_token_cls = supports_cls / float(classes[cls])
             probabilities[cls] *= prob_token_cls
+    return probabilities
+
+
+def classify(text):
+    """Classify given text to the most probable class.
+
+    :param text:
+        A ```string```, representing an observation which needs to be classified.
+    :return:
+        The most likely class or ``None`` if no class available.
+    """
+    probabilities = compute_classes_probabilities(text)
+    # return None if none classes available
+    if not probabilities:
+        return None
     # return class with maximum probability
     return max(probabilities, key=probabilities.get)
 
